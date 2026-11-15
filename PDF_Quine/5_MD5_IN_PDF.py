@@ -186,13 +186,15 @@ def balance_content_stream(page):
     Balance the content stream of the specified page by ensuring that the number of 'q' and 'Q' operators are equal,
     and that the number of 'BMC', 'BDC', and 'EMC' operators are balanced.
     """
-    contents = page['/Contents']
-
-    # could be Array of object or just one object
-    if isinstance(contents, ArrayObject):
-        paths = [x.get_object() for x in contents]
+    contents = page.get('/Contents')
+    if contents is None:
+        paths = []
     else:
-        paths = [contents]
+        # could be Array of object or just one object
+        if isinstance(contents, ArrayObject):
+            paths = [x.get_object() for x in contents]
+        else:
+            paths = [contents]
     
     content_data = b"\n".join(path.get_data() for path in paths)
 
