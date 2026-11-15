@@ -402,7 +402,6 @@ def insert_hash_value(construct_file, c1, c2):
     Insert the MD5 hash value of the constructed PDF into the appropriate locations in the PDF data, 
     using the collision files c1 and c2, and return the modified PDF data as bytes.
     """
-        # -------------- add the hash value -----------------
     nhash = hashlib.md5(construct_file).hexdigest()
     data = construct_file[:192]
 
