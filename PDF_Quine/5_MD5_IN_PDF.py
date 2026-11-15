@@ -277,7 +277,7 @@ def ressources_table(page, old_page_num, new_num):
         else:
             sub = {}
 
-        return b"".join(ser(k) + b" " + ser(v) for k, v in sub.items()) + extra
+        return replace(b"".join(ser(k) + b" " + ser(v) for k, v in sub.items()), old_page_num, new_num) + extra
 
     rb = b"<<"
     for index, values in ressources.items():
@@ -286,7 +286,7 @@ def ressources_table(page, old_page_num, new_num):
         elif index == '/ExtGState':
             rb += b"/ExtGState<<" + merged('/ExtGState', b"/GQz 3003 0 R") + b">>"
         else:
-            rb += ser(index) + b" " + ser(values)
+            rb += replace(ser(index) + b" " + ser(values), old_page_num, new_num)
 
     if '/Font' not in ressources:
         rb += b"/Font<</FQz 3001 0 R>>"
@@ -294,7 +294,7 @@ def ressources_table(page, old_page_num, new_num):
         rb += b"/ExtGState<</GQz 3003 0 R>>"
     rb += b">>"
 
-    return replace(rb, old_page_num, new_num)
+    return rb
 
 def build_page_999(c1, mediabox, page, old_page_num, new_num, rb):
     """
@@ -325,7 +325,7 @@ def build_catalog(rd, old_page_num, new_num):
     catalog = replace(b"".join(ser(index) + b" " + ser(values) for index, values in root.items() if index not in drop), old_page_num, new_num)
     return catalog
 
-def build_fixed_page(prefix, tail, construct_file, final_objs, kids, nb_pages, before, after, catalog):
+def build_fixed_page(prefix, tail, final_objs, kids, nb_pages, before, after, catalog):
     """
     Build the fixed page objects for the PDF and return the updated position object and construction file.
     """
@@ -439,7 +439,7 @@ def main():
     catalog = build_catalog(rd, old_page_num, new_num)
 
     # ----------------- build the final PDF file -----------------
-    pos_obj, construct_file = build_fixed_page(prefix, tail, construct_file, final_objs, kids, nb_pages, before, after, catalog)
+    pos_obj, construct_file = build_fixed_page(prefix, tail, final_objs, kids, nb_pages, before, after, catalog)
     construct_file = build_xref_table(pos_obj, construct_file, final_objs, normalized_pdf, old_page_num, new_num)
 
     # -------------- add the hash value -----------------
