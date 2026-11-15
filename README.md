@@ -40,9 +40,7 @@ Make sure to run the script from `PDF_Quine/` so it can find the supplied `colli
 
 ## Demonstration 
 
-| Generated PDF | MD5 Verification |
-|:---:|:---:|
-| ![PDF Quine](Images/pdf-quine.png) | ![MD5 Verification](Images/md5-verification.png) |
+![](Images/demo.gif)
 
 You can also check `MD5 QUINE DEMONSTRATION.pdf` to verify the result.
 
